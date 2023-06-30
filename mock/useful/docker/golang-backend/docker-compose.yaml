@@ -1,0 +1,17 @@
+version: "3.1"
+services:
+  httpd:
+    build:
+      context: .
+      args:
+        - SSL=true
+        - MODE=dev
+    container_name: httpd-pkg
+    expose:
+      - 8080
+    ports:
+      - 8080:443
+    volumes:
+      - ./htdocs:/usr/local/apache2/htdocs
+      # - ./conf/httpd.conf:/usr/local/apache2/conf/httpd.conf  # If need custom conf
+    restart: always
