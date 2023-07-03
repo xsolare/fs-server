@@ -4,6 +4,8 @@ import { Router } from 'express';
 import { resolve } from 'path';
 import fs from 'fs';
 
+import { upload } from '../middleware/upload.middleware';
+
 import { getFiles } from '#/utils/get-files';
 
 class FsController {
@@ -18,7 +20,7 @@ class FsController {
     this.router.get(`${this.path}/file`, this.getByFiles);
     this.router.get(`${this.path}/file-send`, this.getSendFile);
     this.router.get(`${this.path}/file-download`, this.getDownloadFile);
-    this.router.get(`${this.path}/file-post`, this.postDirectory);
+    this.router.post(`${this.path}/file-upload`, upload.single('file'), this.uploadFile);
   }
 
   private async getByFiles(req: Request, res: Response) {
@@ -40,16 +42,9 @@ class FsController {
     res.download(path);
   }
 
-  private async postDirectory(req: Request, res: Response) {
-    const path = req.params.path ?? './mock';
-
-    fs.mkdir(path, (err) => {
-      if (err) {
-        res.json({ msg: `Failed to create directory: ${err}` });
-      } else {
-        res.json({ msg: 'Directory created successfully' });
-      }
-    });
+  private async uploadFile(req: Request, res: Response) {
+    console.log(req.file);
+    res.send('Файл успешно загружен');
   }
 }
 
