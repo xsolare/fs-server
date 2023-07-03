@@ -34,7 +34,7 @@ export function getFiles(directory: string): IFile[] {
         result.push({
           ...fileInfo,
           type: 'file',
-          extension: path.extname(filePath) ?? null,
+          extension: path.extname(filePath).slice(1, path.extname(filePath).length) ?? null,
           size: stats.size.toString()
         });
       }
